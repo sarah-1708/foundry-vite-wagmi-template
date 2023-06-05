@@ -1,5 +1,5 @@
 import { defineConfig } from '@wagmi/cli';
-import { foundry } from '@wagmi/cli/plugins';
+import { foundry, react } from '@wagmi/cli/plugins';
 
 export default defineConfig({
   out: 'src/wagmi.generated.ts',
@@ -7,6 +7,11 @@ export default defineConfig({
   plugins: [
     foundry({
       project: '.',
+      include: ['MyToken.sol/*.json'],
+      deployments: {
+        MyToken: '0x27f00fcfd68abfdef701d65ca44e42c92e33d509'
+      }
     }),
+    react()
   ],
 });

@@ -1,31 +1,32 @@
 import { useAccount, useConnect } from 'wagmi';
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
 import './App.css';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
+import { useMyTokenMint, useMyTokenSymbol} from './wagmi.generated';
+
 
 function App() {
   const { connect } = useConnect({ connector: new MetaMaskConnector() });
   const { address } = useAccount();
 
+
+  const {write} = useMyTokenMint();
+  const sym = useMyTokenSymbol();
+
+
+
+  const onMint = () => {
+    write({ args: [1000000000n]})
+  }
+
+
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React + Wagmi</h1>
+      
+      <h1>Sepolia Faucet</h1>
       <div className="card">
-        {!address ? <button onClick={() => connect()}>Connect MetaMask</button> : <p>Connected as {address}</p>}
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+        {!address ? <button className="glow-on-hover" onClick={() => connect()}>Connect MetaMask</button> : <p>Connected as {address}</p>}
+        <button type="submit" className="glow-on-hover" onClick={onMint} >Transférer les {sym.data}</button>
       </div>
-      <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
     </>
   );
 }
